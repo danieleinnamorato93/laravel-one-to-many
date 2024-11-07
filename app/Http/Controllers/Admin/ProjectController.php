@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\Type;
 use Illuminate\Http\Request;
 
 
@@ -23,8 +24,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-      
-        return view("admin.projects.create",);
+        $types = Type::all();
+        return view("admin.projects.create",compact("types"));
     }
 
     /**
@@ -36,16 +37,16 @@ class ProjectController extends Controller
             "title"=>"required|max:255|min:3|string|",
             "content"=>"required|max:255|min:3|string|",
             "url"=>"required|url",
-            "type_id"=>"required",
+            "type_id"=> [ "required", "numeric", "integer", "exists:types,id"],
         ],[
             "title.required"=>"Il titolo è necessario",
             "content.required"=>"La descrizione è necessaria",
             "url.required"=>"L' URL è  necessario",
-            "type_id"=>"required",
+            "type_id"=> [ "required", "numeric", "integer", "exists:types,id"],
         ]);
         $projectData = $request->all();
         $project = Project::create($projectData);
-        return redirect()->route("admin.projects.index");
+        return redirect()->route("admin.projects.index",compact("project","types"));
     }
 
     /**
@@ -53,8 +54,9 @@ class ProjectController extends Controller
      */
     public function show(string $id)
     {
+        $types = Type::all();
         $project = Project::findOrFail($id);
-        return view("admin.projects.show", compact("project"));
+        return view("admin.projects.show", compact("project","types"));
     }
 
     /**
@@ -62,8 +64,9 @@ class ProjectController extends Controller
      */
     public function edit(string $id)
     {
+        $types = Type::all();
         $project = Project::findOrFail($id);
-        return view("admin.projects.edit", compact("project"));
+        return view("admin.projects.edit", compact("project","types"));
     }
 
     /**
@@ -75,10 +78,12 @@ class ProjectController extends Controller
             "title"=>"required|max:255|min:3|string|",
             "content"=>"required|max:255|min:3|string|",
             "url"=>"required|url",
+            "type_id"=> [ "required", "numeric", "integer", "exists:types,id"],
         ],[
             "title.required"=>"Il titolo è necessario",
             "content.required"=>"La descrizione è necessaria",
             "url.required"=>"L' URL è  necessario",
+            "type_id"=> [ "required", "numeric", "integer", "exists:types,id"],
         ]);
       
         $project = Project::findOrFail($id);
@@ -91,6 +96,7 @@ class ProjectController extends Controller
      */
     public function destroy(string $id)
     {
+ 
         $project = Project::findOrFail($id);
         $project->delete();
         return redirect()->route("admin.projects.index");
