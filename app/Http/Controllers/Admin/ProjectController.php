@@ -44,6 +44,7 @@ class ProjectController extends Controller
             "url.required"=>"L' URL è  necessario",
             "type_id"=> [ "required", "numeric", "integer", "exists:types,id"],
         ]);
+        $types=Type::all();
         $projectData = $request->all();
         $project = Project::create($projectData);
         return redirect()->route("admin.projects.index",compact("project","types"));

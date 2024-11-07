@@ -10,7 +10,7 @@
 
         <form class="col-12  card p-4" method="POST" action="{{route("admin.projects.store")}}">
             @csrf
-            <h1Project Create:</h1>
+        <h1>Crea un nuovo progetto:</h1>
     
              
              
@@ -41,6 +41,28 @@
                         {{$message}}
                     </div>
                 @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="post-type_id" class="form-label">Tipo:</label>
+                    <select name="type_id" id="post-type_id" class="form-control">
+                    
+                        @foreach ($types as $type)
+                            <option value="{{ $type->id }}"
+                          
+                                    @if($type->id == old("type_id", $type->type_id))
+                                        selected
+                                    @endif
+                                >
+                                {{ $type->name }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @error("type_id")
+                        <div class="alert alert-warning">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
                
            <div class="mb-3 d-flex justify-content-center align-items-center">

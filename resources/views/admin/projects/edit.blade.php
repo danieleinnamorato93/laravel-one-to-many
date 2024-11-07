@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="post-type_id" class="form-label">Type:</label>
+                    <label for="post-type_id" class="form-label">Tipo:</label>
                     <select name="type_id" id="post-type_id" class="form-control">
                     
                         @foreach ($types as $type)
