@@ -36,10 +36,12 @@ class ProjectController extends Controller
             "title"=>"required|max:255|min:3|string|",
             "content"=>"required|max:255|min:3|string|",
             "url"=>"required|url",
+            "type_id"=>"required",
         ],[
             "title.required"=>"Il titolo è necessario",
             "content.required"=>"La descrizione è necessaria",
             "url.required"=>"L' URL è  necessario",
+            "type_id"=>"required",
         ]);
         $projectData = $request->all();
         $project = Project::create($projectData);
